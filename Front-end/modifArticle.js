@@ -1,55 +1,55 @@
 // CONSTANTE
-const urlApi = "http://localhost:3000/api/cameras/";
+const urlApi = "http://localhost:3000/article/";
 const searchParams = new URLSearchParams(window.location.search).get("id");
 const urlApiId = urlApi + searchParams;
-const cameraCard = document.querySelector("#camera-card");
-let btn = document.querySelector(".cart") 
+const validation = document.getElementById("validate");
 
-// UTILITIES
-// fonction qui affiche le nombre d'articles dans le panier
-cameraNumber();
+validation.addEventListener('click', (e)=>{
+    e.preventDefault;
+    formManagementArticle()
+})
 
-fetch(urlApiId)
-    .then((response) => 
-        response.json()
-    .then((product) => {
-      displayProduct(product);
-        // on écoute le click du bouton
-         btn.addEventListener("click",()=>{
-           // créaion variable des infos du produit sélectionné
-            let cameraChoice = {
-              camName : product.name,
-              camId   : product._id,
-              camImage: product.imageUrl,
-              camPrice: product.price/100,
-              camLenses: document.getElementById("choix-lentille").value,
-              camQuantity : meter(),
-              get totalPrice (){
-                    return this.camPrice * this.camQuantity;
-                } 
-            };
-           // si le localStorage est défini
-            if(typeof localStorage != "undefined"){
-                // on recupère la valeur dans le localStorage
-              let cameraStore  = JSON.parse(localStorage.getItem("camInCart"));
-                    // si "camInCart" n'existe pas ou est null
-                    if (cameraStore === null || cameraStore === "undefined") {
-                        cameraStore = []; // on crée le tableau 
-                        cameraStore.push(cameraChoice); // on push la varialble dans cameraStore
-                       } 
-                     if(cameraStore) {
-                        cameraStore.push(cameraChoice); // si le tableau existe on push la varialble dans cameraStore
-                     } 
-                    // on met la variable cameraStore dans localStorage (on redéfini camInCart)
-                    localStorage.setItem("camInCart", JSON.stringify(cameraStore));
-                          if (window.confirm(`Vous avez bien ajouté ${cameraChoice.camQuantity} - ${product.name} au panier. Souhaitez-vous continuer vos achat ?`)) {
-                            window.location.href = "../../index.html";
-                        } else {
-                            window.location.href = "../shop/shop.html";
-                        };   
-                  } else {
-                    alert("Une erreur est survenue");
-                  }
-        });
-    })
-      .catch((err) => ("erreur :" + err)));
+
+function formManagementArticle(){
+
+    let formChecked = document.getElementById('formChecked').checkValidity();
+
+    // Si le formulaire est faux on envoi une alerte
+    if (formChecked == false) {
+        alert("Merci de bien vouloir remplir tout les champs requis d'envoyer votre article");
+
+    // sinon on crée un objet de récuperation des données de l'utilisateur
+    }else{
+        let article = {
+            titre: document.getElementById('articleTitle').value,
+            contenu: document.getElementById('articleContent').value, 
+        };
+        let sendData = fetch(urlApiId, {
+            method: 'PUT',
+            body: JSON.stringify(article),
+            headers:{
+                'Content-Type' : 'application/json',
+            }
+        })
+        sendData.then( async response =>{
+
+            try{// traitement de la reponse, récupération de l'id de confirmation du serveur
+                let confirmation = await response.json();
+                let confirmationId = confirmation.articleId;
+                
+                // création de variable avec contact et l'id récupéré
+                let result = {
+                    article: article,
+                    confirmationId: confirmationId,
+                }
+                // si localStorage est défini on envoi result dans localStorage et on vide la selection en créant un tableau vide 
+                //qu'on envoi dans localStorage et redirection page confirmation
+            
+                    window.location.href = "./index.html";
+
+            } catch(error) {
+                alert("Une erreur est survenue, veuillez retenter plus tard")
+            }
+        })
+    }
+}
