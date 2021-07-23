@@ -7,21 +7,18 @@ fetch(urlArticles)
         response.json()
     .then((data) => {
         console.log(data);
-        templateArticles(data)
+        // `for...of` loop
+for (const [key, value] of Object.entries(data)) {
+    console.log(`${key}: ${value}`);
+    templateArticles(value)
+}
+        
         })
     )
     .catch((err) => console.log('Erreur : ' + err));
 // FUNCTIONS
 
-// fonction qui fait une demande pour avoir le bon URL suivant ID
-
-
-
-
-
-
-
-// fonction pour initialiser les cards 
+ 
 function setGeneral(container, articleElement, selector) {
     let element = container.querySelector(selector);
     // si "image" contenu dans le selector ajouter src + alt
@@ -31,7 +28,7 @@ function setGeneral(container, articleElement, selector) {
     // sinon si "image" contenu dans le selector ajouter href
     }else if(selector.includes("link")){
         element.href += articleElement;
-    //sinon utiliser seulement camElement
+    //
     }else{
     element.innerHTML = articleElement;
     }
@@ -39,12 +36,12 @@ function setGeneral(container, articleElement, selector) {
 
 
 
-function templateArticles(data) {
-    let containerArticles = document.getElementById("id-article");
+function templateArticles(article) {
+    let idArticles = document.getElementById("id-article");
     let baseContainer = document.querySelector('.container-articles');
     // clonage pour réutiliser un template créé dans le HTML
     let container = baseContainer.cloneNode(true);
-    for (let article of data){
+  console.log(article);
         //setGeneral( container, article.profilePic, '.article-profilePic' ) 
         setGeneral( container, article.name, '.article-userName' ) 
         setGeneral( container, article.titre, '.article-title' ) 
@@ -52,11 +49,16 @@ function templateArticles(data) {
         setGeneral( container, article.id, '.article-link')
         //setGeneral( container, article.image, '.article-image')
  
-    }
+    
     // appel des fonctions avec leur bon paramètres
     
     // suppression du display-none
     container.classList.remove('d-none')
+    container.classList.remove('container-articles')
+
     // ajout des données au template de base
-    containerArticles.append(container)
+    idArticles.append(container)
+    //document.body.appendChild(container);
+    console.log("test");
+    console.log(container);
 }

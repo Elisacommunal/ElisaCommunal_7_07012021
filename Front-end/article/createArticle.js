@@ -41,7 +41,7 @@ function formManagementArticle(){
                 // si localStorage est défini on envoi result dans localStorage et on vide la selection en créant un tableau vide 
                 //qu'on envoi dans localStorage et redirection page confirmation
             
-                    window.location.href = "./index.html";
+                    window.location.href = "../article/accueil.html";
 
             } catch(error) {
                 alert("Une erreur est survenue, veuillez retenter plus tard")

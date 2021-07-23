@@ -53,6 +53,7 @@ exports.login = (req, res, next) => {
               { userId: user.id },
               process.env.DB_TOKEN,
               { expiresIn: '24h' }
+              
             )
           });
         })
