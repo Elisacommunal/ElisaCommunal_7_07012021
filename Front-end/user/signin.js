@@ -19,8 +19,11 @@ function formManagement(){
         let contact = {
             email: document.getElementById('inputEmail').value,
             password: document.getElementById('inputPassword').value, 
+            name: document.getElementById('inputName').value,
+            firstName: document.getElementById('inputFirstName').value,
+            profession: document.getElementById('inputProfession').value,
         };
-        let sendData = fetch("http://localhost:3000/user/login", {
+        let sendData = fetch("http://localhost:3000/user/signup", {
             method: 'POST',
             body: JSON.stringify(contact),
             headers:{
@@ -41,7 +44,7 @@ function formManagement(){
                 // si localStorage est défini on envoi result dans localStorage et on vide la selection en créant un tableau vide 
                 //qu'on envoi dans localStorage et redirection page confirmation
             
-                    window.location.href = "./index.html";
+                    window.location.href = "../article/accueil.html";
 
             } catch(error) {
                 alert("Une erreur est survenue, veuillez retenter plus tard")
