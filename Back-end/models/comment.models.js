@@ -1,7 +1,9 @@
 const sql = require("./db.js");
 
 const Comment = function(comment) {
-    this.commentaire = comment.commentaire;
+    this.commentaire = comment.commentaire
+    this.id_article = comment.id_article
+    this.id_User = comment.id_User
 };
   
 Comment.create = (newComment, result) => {
@@ -49,6 +51,24 @@ Comment.create = (newComment, result) => {
         });
       };
 
+      Comment.findByArticleId = (articleId, result) => {
+        sql.query(`SELECT * FROM commentaire WHERE id_article = ${articleId}`, (err, res) => {
+          if (err) {
+            console.log("error: ", err);
+            result(err, null);
+            return;
+          }
+    
+          if (res.length) {
+            console.log("found comments of the article: ", res);
+            result(null, res);
+            return;
+          }
+    
+          // not found article with the id
+          result({ kind: "not_found" }, null);
+        });
+      };
 
       Comment.updateById = (id, comment, result) => {
         sql.query(

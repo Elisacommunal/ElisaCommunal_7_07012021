@@ -11,7 +11,9 @@ exports.create = (req, res) => {
       });
     }
     const comment = new Comment({
-        commentaire: req.body.commentaire
+        commentaire: req.body.commentaire,
+        id_article: req.body.id_article,
+        id_User: req.body.id_User
       });
 
 
@@ -37,6 +39,21 @@ exports.findAll = (req, res) => {
   });
 };
 
+exports.findComsWithArticleId = (req, res) => {
+  Comment.findByArticleId(req.params.articleId, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Les commentaires  de l'article avec l'id ${req.params.articleId} n'ont pas été trouvé.`
+        });
+      } else {
+        res.status(500).send({
+          message: "Erreur de récupération des commentaires correspondant à l'article avec l'id " + req.params.articleId
+        });
+      }
+    } else res.send(data);
+  });
+};
 
 // Find a single Comment with a CommentId
 exports.findOne = (req, res) => {

@@ -8,9 +8,9 @@ fetch(urlArticles)
     .then((data) => {
         console.log(data);
         // `for...of` loop
-for (const [key, value] of Object.entries(data)) {
-    console.log(`${key}: ${value}`);
-    templateArticles(value)
+    for (const [key, value] of Object.entries(data)) {
+        console.log(`${key}: ${value}`);
+        templateArticles(value)
 }
         
         })
@@ -58,7 +58,4 @@ function templateArticles(article) {
 
     // ajout des données au template de base
     idArticles.append(container)
-    //document.body.appendChild(container);
-    console.log("test");
-    console.log(container);
 }
