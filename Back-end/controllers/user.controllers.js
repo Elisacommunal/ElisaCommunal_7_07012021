@@ -14,17 +14,26 @@ exports.signup = (req, res, next) => {
           email: req.body.email,
           password: hash,
           name: req.body.name,
-          firstName: req.body.firstName,
-          profession: req.body.profession,
+          firstname: req.body.firstname,
+          job: req.body.job,
           admin: 0
         });
+
           User.create(utilisateur, (err, data) => {
             if (err)
               res.status(500).send({
                 message:
                   err.message || "Une erreur est servenue lors de la création du User."
               });
-            else res.send(data);
+            else 
+                res.status(201).json({
+                  id: data.id,
+                  token: jwt.sign(
+                    { id: data.id },
+                    process.env.DB_TOK,
+                    { expiresIn: '24h' }
+                  )
+                });
           });
       })
       .catch(error => res.status(500).json({ error }));
@@ -32,35 +41,36 @@ exports.signup = (req, res, next) => {
 
 
 
-exports.login = (req, res, next) => { 
-  User.findById({ email: req.body.email}, function(err,user){
-    if (err){
-      res.status(404).send({
-        message: `Le User avec l'email ${req.body.email} n'a pas été trouvé.`
-      }); }
-
-      if (!user) {
-        return res.status(401).json({ error: 'Utilisateur non trouvé !' });
-      }else{
-      bcrypt.compare(req.body.password, user.password)
+exports.login = (req, res, next) => {
+  User.findOne(req.body.email, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Le user avec l'email ${req.body.email} n'a pas été trouvé.`
+        });
+      } else {
+        res.status(500).send({
+          message: "Erreur de récupération du user avec l'email " + req.body.email
+        });
+      }
+    } else {
+      bcrypt.compare(req.body.password, data.password)
         .then(valid => {
           if (!valid) {
             return res.status(401).json({ error: 'Mot de passe incorrect !' });
           }
           res.status(200).json({
-            userId: user.id,
+            id: data.id,
             token: jwt.sign(
-              { userId: user.id },
-              process.env.DB_TOKEN,
+              { id: data.id },
+              process.env.DB_TOK,
               { expiresIn: '24h' }
-              
             )
           });
-        })
-        .catch(error => res.status(500).json({ error }));
-      }
-    })  
-  }; 
+        }).catch(error => res.status(500).json({ error }))
+  } 
+  });
+};
 
 
 // Retrieve all Users from the database.
