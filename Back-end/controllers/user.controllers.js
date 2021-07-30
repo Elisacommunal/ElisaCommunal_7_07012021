@@ -14,8 +14,8 @@ exports.signup = (req, res, next) => {
           email: req.body.email,
           password: hash,
           name: req.body.name,
-          firstname: req.body.firstname,
-          job: req.body.job,
+          firstName: req.body.firstName,
+          profession: req.body.profession,
           admin: 0
         });
 
@@ -30,7 +30,7 @@ exports.signup = (req, res, next) => {
                   id: data.id,
                   token: jwt.sign(
                     { id: data.id },
-                    process.env.DB_TOK,
+                    process.env.DB_TOKEN,
                     { expiresIn: '24h' }
                   )
                 });
@@ -63,7 +63,7 @@ exports.login = (req, res, next) => {
             id: data.id,
             token: jwt.sign(
               { id: data.id },
-              process.env.DB_TOK,
+              process.env.DB_TOKEN,
               { expiresIn: '24h' }
             )
           });
