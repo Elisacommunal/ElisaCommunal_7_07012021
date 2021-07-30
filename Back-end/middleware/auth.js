@@ -2,7 +2,11 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 module.exports = (req, res, next) => {
-  try {
+
+  var authHeader = req.headers.authorization;
+  var auth = new Buffer(authHeader.split(' ')[1], 'base64').toString().split(':');
+
+ /*  try {
     const token = req.headers.authorization.split(' ')[1];
     const decodedToken = jwt.verify(token, process.env.DB_TOKEN);
     const userId = decodedToken.userId;
@@ -13,5 +17,5 @@ module.exports = (req, res, next) => {
     }
   } catch(error) {
     res.status(401).json({error: error | 'Invalid request!'});
-  }
+  } */
 };

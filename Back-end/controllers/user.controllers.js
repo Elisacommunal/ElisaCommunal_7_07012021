@@ -19,22 +19,37 @@ exports.signup = (req, res, next) => {
           admin: 0
         });
 
-          User.create(utilisateur, (err, data) => {
+        var test;
+
+      let user = User.create(utilisateur, (err, data) => {
             if (err)
               res.status(500).send({
                 message:
                   err.message || "Une erreur est servenue lors de la création du User."
               });
-            else 
-                res.status(201).json({
-                  id: data.id,
+            else {
+
+                return data
+                  /* id: data.id,
                   token: jwt.sign(
                     { id: data.id },
                     process.env.DB_TOKEN,
                     { expiresIn: '24h' }
-                  )
-                });
+                  ) */ 
+                }
+
+
           });
+
+          const token = jwt.sign(
+            { id: user.id,
+              name: user.name },
+            process.env.DB_TOKEN,
+            { expiresIn: '24h' }
+          );
+      test = token;
+                console.log(token);
+          console.log("TOKEN", test);
       })
       .catch(error => res.status(500).json({ error }));
 };
