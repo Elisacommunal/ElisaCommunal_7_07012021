@@ -19,11 +19,12 @@ function formManagementArticle(){
         alert("Merci de bien vouloir remplir tout les champs requis d'envoyer votre article");
 
     // sinon on crée un objet de récuperation des données de l'utilisateur
-    }else{
+    }else if(formChecked == true){
         let article = {
             titre: document.getElementById('articleTitle').value,
             contenu: document.getElementById('articleContent').value, 
         };
+        console.log("HELLO LES AMIS", urlApiId);
         let sendData = fetch(urlApiId, {
             method: 'PUT',
             body: JSON.stringify(article),
@@ -46,11 +47,14 @@ function formManagementArticle(){
                 // si localStorage est défini on envoi result dans localStorage et on vide la selection en créant un tableau vide 
                 //qu'on envoi dans localStorage et redirection page confirmation
             
-                    window.location.href = "./index.html";
+                    window.location.href = "./accueil.html";
 
             } catch(error) {
                 alert("Une erreur est survenue, veuillez retenter plus tard")
             }
         })
+    }else{
+        
+        window.location.href = "./accueil.html";
     }
 }
