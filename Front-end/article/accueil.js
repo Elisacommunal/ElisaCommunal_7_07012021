@@ -2,7 +2,12 @@
 const urlArticles = "http://localhost:3000/article/"
 
 
-fetch(urlArticles)
+fetch(urlArticles, {
+    method: 'GET',
+    headers: {
+        'Authorization': 'Bearer ' + sessionStorage.getItem("token")
+    }
+})
     .then((response) =>
         response.json()
     .then((data) => {

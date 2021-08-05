@@ -32,20 +32,11 @@ function formManagement(){
         })
         sendData.then( async response =>{
 
-            try{// traitement de la reponse, récupération de l'id de confirmation du serveur
+            try{// traitement de la reponse, récupération de la reponse de confirmation du serveur
                 let confirmation = await response.json();
-                let confirmationId = confirmation.contactId;
-                
-                // création de variable avec contact et l'id récupéré
-                let result = {
-                    contact: contact,
-                    confirmationId: confirmationId,
-                }
-                // si localStorage est défini on envoi result dans localStorage et on vide la selection en créant un tableau vide 
-                //qu'on envoi dans localStorage et redirection page confirmation
-            
+                console.log(confirmation);
+                    sessionStorage.setItem("token", confirmation.token)
                     window.location.href = "../article/accueil.html";
-
             } catch(error) {
                 alert("Une erreur est survenue, veuillez retenter plus tard")
             }

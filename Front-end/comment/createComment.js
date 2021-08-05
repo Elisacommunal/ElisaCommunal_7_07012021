@@ -27,6 +27,7 @@ function formManagementComments(){
             body: JSON.stringify(comment),
             headers:{
                 'Content-Type' : 'application/json',
+                'Authorization': 'Bearer ' + sessionStorage.getItem("token")
             }
         })
         sendComment.then( async response =>{

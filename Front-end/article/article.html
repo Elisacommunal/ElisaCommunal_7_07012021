@@ -33,7 +33,11 @@
                             <h3 class="card-text article-title"></h3>
                             <p class="card-text article-content"></p>
                             <img src="" class="card-img-top article-image" alt="">
-                            <a href="./modifArticle.html?id=" class="btn btn-dark article-link">Modifier</a>
+                            <div class="row">
+                                <a href="./modifArticle.html?id=" class="col-6 btn btn-dark article-link">Modifier</a>
+                                <a href="#" class="col-6 btn btn-dark article-link" id="Supprimer">Supprimer</a>
+                            </div>
+                            
                         </div>
                     </div>
                 </div>
@@ -74,5 +78,6 @@
     <script src="./article.js"></script>
     <script src="../comment/createComment.js"></script>
     <script src="../comment/comment.js"></script>
+    <script src="./deleteArticle.js"></script>
 </body>
 </html>

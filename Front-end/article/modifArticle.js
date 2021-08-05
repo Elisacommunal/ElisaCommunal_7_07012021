@@ -29,6 +29,7 @@ function formManagementArticle(){
             body: JSON.stringify(article),
             headers:{
                 'Content-Type' : 'application/json',
+                'Authorization': 'Bearer ' + sessionStorage.getItem("token")
             }
         })
         sendData.then( async response =>{

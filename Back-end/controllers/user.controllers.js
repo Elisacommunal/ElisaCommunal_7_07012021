@@ -7,9 +7,9 @@ require('dotenv').config();
 
 
 // Create and Save a new user
-exports.signup = (req, res, next) => {
-  bcrypt.hash(req.body.password, 10)
-      .then(hash => {
+exports.signup =  (req, res, next) => {
+   bcrypt.hash(req.body.password, 10)
+      .then( hash => {
         const utilisateur = new User({
           email: req.body.email,
           password: hash,
@@ -18,41 +18,25 @@ exports.signup = (req, res, next) => {
           profession: req.body.profession,
           admin: 0
         });
-
-        var test;
-
-      let user = User.create(utilisateur, (err, data) => {
+          User.create(utilisateur, (err, data) => {
             if (err)
               res.status(500).send({
                 message:
                   err.message || "Une erreur est servenue lors de la création du User."
               });
-            else {
-
-                return data
-                  /* id: data.id,
+              else{
+                res.status(200).json({
+                  id: data.id,
                   token: jwt.sign(
                     { id: data.id },
                     process.env.DB_TOKEN,
                     { expiresIn: '24h' }
-                  ) */ 
-                }
-
-
-          });
-
-          const token = jwt.sign(
-            { id: user.id,
-              name: user.name },
-            process.env.DB_TOKEN,
-            { expiresIn: '24h' }
-          );
-      test = token;
-                console.log(token);
-          console.log("TOKEN", test);
-      })
+                  )
+                }); 
+              }}); 
+            })
       .catch(error => res.status(500).json({ error }));
-};
+      }
 
 
 
@@ -68,12 +52,12 @@ exports.login = (req, res, next) => {
           message: "Erreur de récupération du user avec l'email " + req.body.email
         });
       }
-    } else {
+    } else { 
       bcrypt.compare(req.body.password, data.password)
         .then(valid => {
           if (!valid) {
             return res.status(401).json({ error: 'Mot de passe incorrect !' });
-          }
+          }else{
           res.status(200).json({
             id: data.id,
             token: jwt.sign(
@@ -81,7 +65,7 @@ exports.login = (req, res, next) => {
               process.env.DB_TOKEN,
               { expiresIn: '24h' }
             )
-          });
+          })};
         }).catch(error => res.status(500).json({ error }))
   } 
   });

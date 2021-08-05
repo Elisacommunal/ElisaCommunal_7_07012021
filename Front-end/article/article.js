@@ -4,6 +4,21 @@ const searchParams = new URLSearchParams(window.location.search).get("id");
 const urlApiId = urlApi + searchParams;
 
 //fonction
+
+fetch(urlApiId, {
+    method: 'GET',
+    headers: {
+        'Authorization': 'Bearer ' + sessionStorage.getItem("token")
+    }
+})
+    .then((response) => 
+        response.json()
+    .then((data) => {
+      displayArticle(data);
+        // on écoute le click du bouton
+    })
+      .catch((err) => ("erreur :" + err)));
+
 function setGeneral(container, articleElement, selector) {
     let element = container.querySelector(selector);
     // si "image" contenu dans le selector ajouter src + alt
@@ -40,11 +55,3 @@ function displayArticle(article) {
 
 // UTILITIES
 
-fetch(urlApiId)
-    .then((response) => 
-        response.json()
-    .then((data) => {
-      displayArticle(data);
-        // on écoute le click du bouton
-    })
-      .catch((err) => ("erreur :" + err)));

@@ -4,7 +4,12 @@ const idArticleComment = new URLSearchParams(window.location.search).get("id");
 const urlApiIdComments = urlComments + idArticleComment + "/comment";
 
 
-fetch(urlApiIdComments)
+fetch(urlApiIdComments, {
+    method: 'GET',
+    headers: {
+        'Authorization': 'Bearer ' + sessionStorage.getItem("token")
+    }
+})
     .then((response) =>
         response.json()
     .then((data) => {
